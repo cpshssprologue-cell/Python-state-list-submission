@@ -1,0 +1,12 @@
+Remaining:
+
+File Linking
+Database creation
+Database Entry script update
+Main File
+Homepage creation - tkinter image with buttons
+Database display
+Search and display
+Update Script
+Article Pop Up
+Article Buttons and Links.
