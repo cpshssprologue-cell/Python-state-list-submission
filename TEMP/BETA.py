@@ -20,6 +20,59 @@ Data = {
     19: ['THE GOLDEN TEMPLE', 'https://en.wikipedia.org/wiki/Golden_Temple', 'PUNJAB', 'AMRITSAR', '07/02/2026', 1577, 'AMRITSAR AIRPORT', 'https://www.aai.aero', 'AMRITSAR JUNCTION', 'https://indianrailways.gov.in', 'ALL-DAY', 'HYATT REGENCY, TAJ SWARNA', 'https://www.tajhotels.com', 7000, 'The preeminent spiritual site of Sikhism, also known as Sri Harmandir Sahib.', 'Cover your head, remove shoes, photography limited.'],
     20: ['THE CHURCHES AND CONVENTS OF GOA', 'https://en.wikipedia.org/wiki/Churches_and_Convents_of_Goa', 'GOA', 'OLD GOA', '07/02/2026', 1986, 'GOA INTERNATIONAL', 'https://www.aai.aero', 'MADGAON JUNCTION', 'https://indianrailways.gov.in', '7:30AM-6:30PM', 'W GOA, TAJ EXOTICA', 'https://www.marriott.com', 13000, 'A set of religious monuments in Old Goa, the former capital of Portuguese India.', 'Dress modestly for active churches, parking can be far.']
 }
-print("\t\t HERITAGE SITE LIST", "\n \n The table lists Serial No, Name, State, City, Date Estabilished, Closest Airport, Closest Railway, Touring Times, Close hotels from IHG, Average tourism rates and a desc")
-for x in Data:
-    print(x, '-\t', Data[x][0], Data[x][2], '-\t', Data[x][3], '-\t', Data[x][5], '-\t', Data[x][6], '-\t', Data[x][8], '-\t', Data[x][10], '-\t', Data[x][11], '-\t', Data[x][13], '-\t', Data[x][14], '\n\n\n')
+def list():
+    print("\t\t HERITAGE SITE LIST", "\n \n The table lists Serial No, Name, State, City, Date Estabilished, Closest Airport, Closest Railway, Touring Times, Close hotels from IHG, Average tourism rates and a desc")
+    for x in Data:
+        print(x, '-\t', Data[x][0], Data[x][2], '-\t', Data[x][3], '-\t', Data[x][5], '-\t', Data[x][6], '-\t', Data[x][8], '-\t', Data[x][10], '-\t', Data[x][11], '-\t', Data[x][13], '-\t', Data[x][14], '\n\n\n')
+    print("Type list() to print the dictionary, search() to search the dictionary, delete() to delete an entry, and entry() to add a number of new entries.")
+def search():
+    trm = input("Search: ").lower()
+    for x in Data:
+        for y in Data[x]:
+            if trm in str(y).lower():
+                print(x, '-\t', Data[x][0], Data[x][2], '-\t', Data[x][3], '-\t', Data[x][5], '-\t', Data[x][6], '-\t', Data[x][8], '-\t', Data[x][10], '-\t', Data[x][11], '-\t', Data[x][13], '-\t', Data[x][14], '\n\n\n')
+    print("Type list() to print the dictionary, search() to search the dictionary, delete() to delete an entry, and entry() to add a number of new entries.")
+def entry():
+    Index = len(Data)
+    nEntry = int(input("Input number of new Entries: "))
+    for x in range(nEntry):
+        entry_id = Index + x + 1
+        print(f"Entry {entry_id}")
+        NAME = input("Enter Place Heading: ").upper()
+        WIKI = input("Enter Wiki Address: ").lower()
+        STATE = input("Enter State: ").upper()
+        LOCATION = input("Enter location: ").upper()
+        YEARLSTED = input("Enter Date: ").upper()
+        SINCE = int(input("Since: "))
+        AIRPORT = input("Label nearest Airport: ").upper()
+        AIRPORT_INFO = input("Enter Airport Website: ").lower()
+        RAILWAY = input("Label nearest Railway: ").upper()
+        RAILWAY_INFO = input("Enter Railway Website: ").lower()
+        VISITHRS = input("Enter Visiting Hours: ").upper()
+        HOTEL = input("Enter close hotels: ").upper()
+        HOTEL_INFO = input("Enter Hotel Info links: ").lower()
+        FEES = input("Enter travelling fees: ")
+        DESC = input("Write a description: ")
+        PREC = input("Label Precautions, and dangers: ")
+        
+        conlist = [IMG, FONT, NAME, WIKI, STATE, LOCATION, YEARLSTED, SINCE, AIRPORT, 
+                   AIRPORT_INFO, RAILWAY, RAILWAY_INFO, VISITHRS, HOTEL, HOTEL_INFO, 
+                   FEES, DESC, PREC]
+        
+        Data[entry_id] = conlist
+        print("\n\n")
+    print("Type list() to print the dictionary, search() to search the dictionary, delete() to delete an entry, and entry() to add a number of new entries.")
+def delete():
+    trm = int(input("Enter the Serial No of the article you want to delete and it shall be removed: "))
+    Data.pop(trm)
+    DataTemp={}
+    x = 1
+    while x<trm:
+        DataTemp[x] = Data[x]
+        x = x+1
+    for x in range(trm, len(Data)+1):
+        DataTemp[x] = Data[x+1]
+    for x in DataTemp:
+        Data[x] = DataTemp[x]
+    print("Type list() to print the dictionary, search() to search the dictionary, delete() to delete an entry, and entry() to add a number of new entries.")
+list()
