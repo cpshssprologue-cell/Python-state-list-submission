@@ -1,111 +1,97 @@
 import tkinter as tk
-from tkinter import messagebox
-from PIL import Image, ImageTk
+from tkinter import ttk, messagebox
+import webbrowser
 import random
-import os
-import subprocess
-
+from PIL import Image, ImageTk
 from Assets.Data import Data
-from window import ArticleWindow
+from Window import ArticleWindow # Assuming Window.py contains the class you shared
+import os
 
+class HomeApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Home")
+        self.root.geometry("1000x600")
+        self.custom_font = ("Rajdhani", 24, "bold")
+        self.kesar_yellow = "#FF9933" # Indian Saffron / Kesar
 
-root = tk.Tk()
-root.title("Heritage Display")
-root.geometry("1200x700")
+        # 2. Set Background
+        bg_path = "Assets/Images/bgimg.jpg"
+        if os.path.exists(bg_path):
+            img = Image.open(bg_path).resize((1000, 600))
+            self.bg_img = ImageTk.PhotoImage(img)
+            bg_label = tk.Label(self.root, image=self.bg_img)
+            bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+        
+        # 3. Heading
+        heading = tk.Label(
+            self.root, text="HELLO INDIA", 
+            font=self.custom_font, fg=self.kesar_yellow, bg="black"
+        )
+        heading.pack(pady=50)
 
-bg_img = Image.open("Assets/bg_img.jpg").resize((1200, 700))
-bg_photo = ImageTk.PhotoImage(bg_img)
+        # 4. Buttons Frame
+        btn_frame = tk.Frame(self.root, bg="black")
+        btn_frame.pack(pady=20)
 
-bg_label = tk.Label(root, image=bg_photo)
-bg_label.place(x=0, y=0, relwidth=1, relheight=1)
-
-logo_img = Image.open("Assets/logo.jpg").resize((200, 200))
-logo_photo = ImageTk.PhotoImage(logo_img)
-
-logo_label = tk.Label(root, image=logo_photo, bg="white")
-logo_label.place(relx=0.5, rely=0.25, anchor="center")
-
-heading = tk.Label(
-    root,
-    text="DICTIONARY BASED PYTHON HERITAGE SITE DISPLAY",
-    font=("Arial", 20, "bold"),
-    bg="white"
-)
-heading.place(relx=0.5, y=50, anchor="center")
-
-key_entry = tk.Entry(root, font=("Arial", 14))
-key_entry.place(relx=0.5, rely=0.45, anchor="center")
-
-def open_article():
-    try:
-        key = int(key_entry.get())
-        ArticleWindow(key)
-    except:
-        messagebox.showerror("Error", "Enter a valid key")
-
-tk.Button(root, text="Open", command=open_article).place(relx=0.5, rely=0.5, anchor="center")
-
-def open_random():
-    ArticleWindow(random.choice(list(Data.keys())))
-
-def open_entry():
-    subprocess.Popen(["python3", "entry.py"])
-
-def delete_key():
-    try:
-        k = int(key_entry.get())
-        del Data[k]
-        messagebox.showinfo("Deleted", f"Entry {k} deleted")
-    except:
-        messagebox.showerror("Error", "Invalid key")
-
-def open_table(keys=None):
-    win = tk.Toplevel()
-    win.title("Table")
-    win.geometry("900x500")
-
-    if keys is None:
-        keys = Data.keys()
-
-    for k in keys:
-        d = Data[k]
-        row = f"{k} | {d[2]} | {d[4]} | {d[5]} | ₹{d[15]}"
-        tk.Button(
-            win,
-            text=row,
-            anchor="w",
-            command=lambda x=k: ArticleWindow(x)
-        ).pack(fill="x")
-
-def open_search():
-    win = tk.Toplevel()
-    win.title("Search")
-
-    entry = tk.Entry(win)
-    entry.pack()
-
-    def do_search():
-        q = entry.get().lower()
-        result = [
-            k for k, v in Data.items()
-            if any(q in str(x).lower() for x in v)
+        buttons = [
+            ("View List", self.open_list),
+            ("Search", self.open_search),
+            ("Random Site", self.open_random),
+            ("Add Entry", self.add_entry),
+            ("Delete Entry", self.delete_entry)
         ]
-        open_table(result)
 
-    tk.Button(win, text="Search", command=do_search).pack()
+        for text, cmd in buttons:
+            tk.Button(btn_frame, text=text, width=15, command=cmd).pack(pady=5)
 
-btn_frame = tk.Frame(root, bg="white")
-btn_frame.place(relx=0.5, rely=0.9, anchor="center")
+    def open_list(self):
+        list_win = tk.Toplevel(self.root)
+        list_win.title("Heritage Site List")
+        list_win.geometry("800x400")
 
-buttons = [
-    ("Table", lambda: open_table()),
-    ("Search", open_search),
-    ("Deletion", delete_key),
-    ("Entry", open_entry),
-    ("Random", open_random)
-]
+        # Table (Treeview)
+        cols = ("ID", "Name", "State", "City", "Established")
+        tree = ttk.Treeview(list_win, columns=cols, show="headings")
+        
+        for col in cols:
+            tree.heading(col, text=col)
+            tree.column(col, width=100)
 
-for i, (txt, cmd) in enumerate(buttons):
-    tk.Button(btn_frame, text=txt, command=cmd, width=10).grid(row=0, column=i, padx=5)
+        for key, val in Data.items():
+            # Index 2: Name, 4: State, 5: City, 7: Year
+            tree.insert("", "end", values=(key, val[2], val[4], val[5], val[7]))
 
-root.mainloop()
+        tree.pack(fill="both", expand=True)
+
+        # Double click to open the Article Window
+        tree.bind("<Double-1>", lambda e: self.launch_article(tree))
+
+    def launch_article(self, tree):
+        selected = tree.selection()
+        if selected:
+            item_id = tree.item(selected[0])['values'][0]
+            ArticleWindow(item_id) # Launches your class from Window.py
+
+    def open_random(self):
+        if Data:
+            random_key = random.choice(list(Data.keys()))
+            ArticleWindow(random_key)
+
+    def open_search(self):
+        # Implementation for search pop-up...
+        pass
+
+    def add_entry(self):
+        # Logic to take input and append to Data.py 
+        # (Requires file handling to make it permanent)
+        messagebox.showinfo("Feature", "Entry System Triggered")
+
+    def delete_entry(self):
+        # Logic to pop item from Data dictionary
+        pass
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = HomeApp(root)
+    root.mainloop()
