@@ -7,7 +7,6 @@ try:
     Data = olddata
 except (ImportError, SyntaxError):
         Data = {}
-
 Index = len(Data)
 nEntry = int(input("Input number of new Entries: "))
 for x in range(nEntry):

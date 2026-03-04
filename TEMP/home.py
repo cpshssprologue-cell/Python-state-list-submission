@@ -21,34 +21,32 @@ def main():
         canvas.pack(fill="both", expand=True)
         canvas.create_image(0, 0, image=bg_photo, anchor="nw")
     except Exception as exception1:
-        root.geometry("1080x1080")
+        root.geometry("1368x822")
         canvas = tk.Canvas(root, bg="#2c3e50")
         canvas.pack(fill="both", expand=True)
     button_style = {
-        "font": ("Times New Roman", 14),
-        "bg": "#ffffff",
-        "fg": "#333333",
-        "activebackground": "#eeeeee",
-        "width": 15,
-        "pady": 10,
+        "font": ("Lucida Console", 10),
+        "width": 10,
+        "pady": 15,
     }
-    menu_frame = tk.Frame(root, bg="")
+    frame = tk.Frame(root, bg="")
+    frame.pack(side="top", fill="both", expand=True, padx=10, pady=10)
     buttons = [
         ("Entry", "entry.py"),
-        ("Deletion", "delete.py"),
+        ("Deletion", "deletion.py"),
         ("List", "table.py"),
         ("Search", "search.py"),
         ("Random", "random.py")
     ]
     for text, file in buttons:
         btn = tk.Button(
-            menu_frame, 
+            frame, 
             text=text, 
             command=lambda f=file: open_file(f),
             **button_style
         )
-        btn.pack(pady=10)
-    canvas.create_window(img_width//2, img_height//2, window=menu_frame)
+        btn.pack(pady=0)
+    canvas.create_window(img_width//2, img_height//2, window=frame)
     root.mainloop()
 if __name__ == "__main__":
     main()
