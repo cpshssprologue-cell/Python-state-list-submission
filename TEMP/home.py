@@ -25,9 +25,13 @@ def main():
         canvas = tk.Canvas(root, bg="#2c3e50")
         canvas.pack(fill="both", expand=True)
     button_style = {
-        "font": ("Lucida Console", 10),
+        "font": ("Trebuchet MS", 15, 'bold'),
         "width": 10,
         "pady": 15,
+        "highlightcolor": 'orange',
+        "highlightthickness": 0,
+        "background": '#D3D9E4',
+        "foreground": '#A20001'
     }
     frame = tk.Frame(root, bg="")
     frame.pack(side="top", fill="both", expand=True, padx=10, pady=10)
@@ -46,7 +50,7 @@ def main():
             **button_style
         )
         btn.pack(pady=0)
-    canvas.create_window(img_width//2, img_height//2, window=frame)
+    canvas.create_window(img_width//8, img_height//1.5, window=frame)
     root.mainloop()
 if __name__ == "__main__":
     main()

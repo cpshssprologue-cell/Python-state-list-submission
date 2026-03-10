@@ -8,14 +8,17 @@ try:
 except (ImportError, SyntaxError):
         print("ERROR: THE DATA PYTHON FILE WAS MISSING FROM ITS ORIGINAL FOLDER, THIS FILE WON'T WORK WITHOUT IT")
 Index = len(Data)
-nDel = int(input("Input the Serial No. of the entry you want to delete - \n (Index and other info can be found using search) \t: "))
-VerQ = input(print("Is", Data[nDel][2],"the entry to delete?(Y/N)\t: ")).upper()
+nDel = int(input("Input the Serial No. of the entry you want to delete - \n (Serial No. and other info can be found using search) \t: "))
+VerQ = input(('Is', Data[nDel][2], 'the entry to delete?(Y/N): '))
+Data1 = []
 if VerQ == 'Y':
     Data.pop(nDel)
-    for x in range(nDel, len(Data)+1):
-        Data[x] = Data[x+1]
+    y = 1
+    for x in Data.values():
+        Data1[y] = x
+        y = y+1
+    Data.clear()
 print(Data)
-        
-        
+
 #with open(File, "w") as f:
     #f.write(f"Data = {repr(Data)}")
