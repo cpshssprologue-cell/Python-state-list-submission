@@ -40,7 +40,8 @@ def main():
         ("Deletion", "deletion.py"),
         ("List", "table.py"),
         ("Search", "search.py"),
-        ("Random", "random.py")
+        ("Random", "random.py",
+         "Reload", "home.py")
     ]
     for text, file in buttons:
         btn = tk.Button(
