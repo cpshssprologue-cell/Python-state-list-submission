@@ -1,0 +1,12 @@
+Ticket Booker- 
+
+Main Homepage opens up-
+Logo, Search Field, Login button, Watchlist, News and Offers, Top 10, Now Playing, Available Shows, Pre-order, View watch logs, Snacks and Food, About Page button (project details).
+
+Login gives you access to reward points, Pre-orders, Tickets, Watch Logs.
+
+Search gives you a special menu where you can search through the month's playlist of movies.If a certain movie is not there, the user can have an option to request a movie: This opens up a request page, which sends a mail to the a specific mail address, with a BCC to any specific additional address requesting the movie to be added.
+
+Upon clicking on any specific movie page, it should bring up a suitable window with the promotional materials linked, the IMDB Scores, comments, and etc. A book now button, add to watchlist.
+
+The bookings page should serve as a .. booking page for everything, languages, screenings, shows available, 3D, date, seats everything must be an option resulting to a final roster of available screenings from which the user can pick a convenient seat from, the page would open to a fake payment terminal with a suitable price and then after the booking is complete, take you back to the home page.
