@@ -1,47 +1,50 @@
-import PIL
-import click
-from colorama import Fore, Back, Style, init
-from PIL import Image
+import os
+import webbrowser
+os.system("")
+RED = '\033[91m'
+GREEN = '\033[92m'
+YELLOW = '\033[93m'
+BLUE = '\033[94m'
+END = '\033[0m'
 Data = {
-    1: ['THE AGRA FORT', 'https://en.wikipedia.org/wiki/Agra_Fort', 'UTTAR PRADESH', 'AGRA', '07/02/2026', 1573, 'AGRA AIRPORT', 'https://www.aai.aero/en/node/2901', 'AGRA FORT RAILWAY', 'https://indianrailways.gov.in', 'ALL-DAY', 'THE IMPERIAL, ITC MUGHAL, COURTYARD BY MARRIOTT', 'https://www.tripadvisor.in', 10500, 'A 16th-century Mughal imperial fortress in Agra. It was the main residence of the emperors of the Mughal Dynasty until 1638.', 'Intense Crowds, Touts, Noise, Scams.'],
-    2: ['THE TAJ MAHAL', 'https://en.wikipedia.org/wiki/Taj_Mahal', 'UTTAR PRADESH', 'AGRA', '07/02/2026', 1632, 'AGRA AIRPORT', 'https://www.aai.aero', 'AGRA CANTT', 'https://indianrailways.gov.in', '6AM-7PM', 'THE OBEROI AMARVILAS, TAJ HOTEL', 'https://www.tajhotels.com', 15000, 'An ivory-white marble mausoleum on the right bank of the river Yamuna. Built by Shah Jahan for his wife Mumtaz Mahal.', 'Heavy security check, strictly no drones, crowds.'],
-    3: ['THE LOTUS TEMPLE', 'https://en.wikipedia.org/wiki/Lotus_Temple', 'DELHI', 'NEW DELHI', '07/02/2026', 1986, 'IGIA DELHI', 'https://www.newdelhiairport.in', 'KALKAJI MANDIR METRO', 'https://www.delhimetrorail.com', '9AM-5PM', 'EROS HOTEL, THE SURYAA', 'https://www.ihg.com', 4500, 'A Bahai House of Worship notable for its flowerlike shape. It has become a prominent attraction in the city.', 'Silence must be maintained, no photography inside.'],
-    4: ['THE WILD ASS SANCTUARY', 'https://en.wikipedia.org/wiki/Indian_Wild_Ass_Sanctuary', 'GUJARAT', 'LITTLE RANN OF KUTCH', '07/02/2026', 1972, 'AHMEDABAD AIRPORT', 'https://www.aai.aero', 'DHRANGADHRA RAILWAY', 'https://indianrailways.gov.in', '6AM-6PM', 'RANN RIDERS, DESERT COURTYARD', 'https://www.rannriders.com', 8500, 'The largest wildlife sanctuary in India, home to the endangered Indian Wild Ass.', 'Extreme heat in summer, carry plenty of water.'],
-    5: ['THE MATTANCHERRY PALACE', 'https://en.wikipedia.org/wiki/Mattancherry_Palace', 'KERALA', 'KOCHI', '07/02/2026', 1545, 'COCHIN INTERNATIONAL', 'https://cial.aero', 'ERNAKULAM JUNCTION', 'https://indianrailways.gov.in', '10AM-5PM', 'GRAND HYATT, TAJ MALABAR', 'https://www.tajhotels.com', 6000, 'A Portuguese palace popularly known as the Dutch Palace, featuring Kerala murals depicting Hindu temple art.', 'Closed on Fridays, no footwear inside galleries.'],
-    6: ['LE CORBUSIER ARCHITECTURAL WORK', 'https://en.wikipedia.org/wiki/The_Architectural_Work_of_Le_Corbusier', 'CHANDIGARH', 'CHANDIGARH', '07/02/2026', 1950, 'CHANDIGARH AIRPORT', 'https://www.aai.aero', 'CHANDIGARH JUNCTION', 'https://indianrailways.gov.in', '9AM-5PM', 'JW MARRIOTT, TAJ CHANDIGARH', 'https://www.marriott.com', 9000, 'The Capitol Complex in Chandigarh is a UNESCO site representing the modern movement in architecture.', 'Prior permission needed for the Capitol Complex.'],
-    7: ['THE GREAT HIMALAYAN NATIONAL PARK', 'https://en.wikipedia.org/wiki/Great_Himalayan_National_Park', 'HIMACHAL PRADESH', 'KULLU', '07/02/2026', 1984, 'KULLU MANALI AIRPORT', 'https://www.aai.aero', 'JOGINDER NAGAR', 'https://indianrailways.gov.in', 'ALL-DAY', 'THE RAJU COTTAGE, FOREST GUEST HOUSE', 'https://www.himachaltourism.gov.in', 12000, 'A high altitude park with diverse flora and fauna, including the elusive Snow Leopard.', 'Steep treks, unpredictable weather, permit required.'],
-    8: ['THE WESTERN GHATS', 'https://en.wikipedia.org/wiki/Western_Ghats', 'MAHARASHTRA/KARNATAKA/KERALA', 'MULTIPLE', '07/02/2026', 2012, 'MUMBAI/BANGALORE AIRPORT', 'https://www.aai.aero', 'MULTIPLE', 'https://indianrailways.gov.in', 'ALL-DAY', 'VIVANTA BY TAJ, STERLING RESORTS', 'https://www.sterlingholidays.com', 18000, 'One of the worlds ten hottest biodiversity hotspots, older than the Himalayas.', 'Leeches during monsoon, dense forests, stay on trails.'],
-    9: ['THE RED FORT', 'https://en.wikipedia.org/wiki/Red_Fort', 'DELHI', 'OLD DELHI', '07/02/2026', 1639, 'IGIA DELHI', 'https://www.newdelhiairport.in', 'OLD DELHI RAILWAY', 'https://indianrailways.gov.in', '9:30AM-4:30PM', 'THE MAIDENS HOTEL, ITC MAURYA', 'https://www.oberoihotels.com', 8000, 'A historic fort that served as the main residence of Mughal Emperors for nearly 200 years.', 'Closed on Mondays, extremely crowded, light show at night.'],
-    10: ['THE ROCK SHELTERS OF BHIMBETKA', 'https://en.wikipedia.org/wiki/Rock_Shelters_of_Bhimbetka', 'MADHYA PRADESH', 'RAISEN', '07/02/2026', 2003, 'BHOPAL AIRPORT', 'https://www.aai.aero', 'BHOPAL JUNCTION', 'https://indianrailways.gov.in', '7AM-6PM', 'JEHAN NUMA PALACE, COURTYARD BY MARRIOTT', 'https://www.marriott.com', 7500, 'Archaeological site exhibiting the earliest traces of human life on the Indian subcontinent.', 'Remote area, hire a guide for historical context.'],
-    11: ['THE MOUNTAIN RAILWAYS OF INDIA', 'https://en.wikipedia.org/wiki/Mountain_Railways_of_India', 'WB/TN/HP', 'MULTIPLE', '07/02/2026', 1999, 'BAGDOGRA/COIMBATORE', 'https://www.aai.aero', 'DARJEELING/OOTY/KALKA', 'https://indianrailways.gov.in', 'SCHEDULE-BASED', 'WINDAMERE HOTEL, SAVOY OOTY', 'https://www.tajhotels.com', 14000, 'Includes Darjeeling Himalayan Railway, Nilgiri Mountain Railway, and Kalka-Shimla Railway.', 'Book tickets months in advance, landslides in monsoon.'],
-    12: ['THE QUTB MINAR', 'https://en.wikipedia.org/wiki/Qutb_Minar', 'DELHI', 'MEHRAULI', '07/02/2026', 1192, 'IGIA DELHI', 'https://www.newdelhiairport.in', 'QUTUB MINAR METRO', 'https://www.delhimetrorail.com', '7AM-9PM', 'THE LODHI, HILTON GARDEN INN', 'https://www.hilton.com', 5000, 'A 73-metre tall tapering tower and a UNESCO World Heritage Site.', 'No climbing the tower, high summer heat.'],
-    13: ['THE SUNDARBANS NATIONAL PARK', 'https://en.wikipedia.org/wiki/Sundarbans_National_Park', 'WEST BENGAL', '24 PARGANAS', '07/02/2026', 1987, 'KOLKATA AIRPORT', 'https://www.aai.aero', 'CANNING RAILWAY', 'https://indianrailways.gov.in', '8AM-6PM', 'SUNDARBAN TIGER CAMP', 'https://www.sundarbantigercamp.com', 16000, 'World largest mangrove forest and home to the Royal Bengal Tiger.', 'Boat travel only, watch out for crocodiles and tigers.'],
-    14: ['THE HAMPI MONUMENTS', 'https://en.wikipedia.org/wiki/Hampi', 'KARNATAKA', 'HAMPI', '07/02/2026', 1986, 'HUBLI AIRPORT', 'https://www.aai.aero', 'HOSAPETE JUNCTION', 'https://indianrailways.gov.in', '6AM-6PM', 'EVOLVE BACK, HYATT PLACE', 'https://www.evolveback.com', 11000, 'Ruins of the Vijayanagara Empire capital, featuring stunning Dravidian temples.', 'Vast area, hire a bicycle, dress conservatively.'],
-    15: ['THE MAHABALIPURAM MONUMENTS', 'https://en.wikipedia.org/wiki/Mahabalipuram', 'TAMIL NADU', 'CHENGALPATTU', '07/02/2026', 1984, 'CHENNAI INTERNATIONAL', 'https://www.aai.aero', 'CHENGALPATTU JUNCTION', 'https://indianrailways.gov.in', '6AM-6PM', 'RADISSON BLU RESORT, TAJ FISHERMANS COVE', 'https://www.tajhotels.com', 9500, 'A collection of 7th- and 8th-century religious monuments including the Shore Temple.', 'Humid coastal weather, local monkeys can be aggressive.'],
-    16: ['THE SUN TEMPLE KONARK', 'https://en.wikipedia.org/wiki/Konark_Sun_Temple', 'ODISHA', 'PURI', '07/02/2026', 1984, 'BHUBANESWAR AIRPORT', 'https://www.aai.aero', 'PURI RAILWAY', 'https://indianrailways.gov.in', '6AM-8PM', 'MAYFAIR WAVES, THE CHARIOT', 'https://www.mayfairhotels.com', 8000, 'A 13th-century Sun Temple shaped like a giant chariot with carved stone wheels.', 'Intense sun, hire a government approved guide.'],
-    17: ['THE ELLORA CAVES', 'https://en.wikipedia.org/wiki/Ellora_Caves', 'MAHARASHTRA', 'AURANGABAD', '07/02/2026', 1983, 'AURANGABAD AIRPORT', 'https://www.aai.aero', 'AURANGABAD RAILWAY', 'https://indianrailways.gov.in', '6AM-6PM', 'VIVANTA, WELCOMHOTEL RAMA INTERNATIONAL', 'https://www.itchotels.com', 9000, 'One of the largest rock-cut monastery-temple cave complexes in the world.', 'Closed on Tuesdays, lots of walking and steps.'],
-    18: ['THE AJANTA CAVES', 'https://en.wikipedia.org/wiki/Ajanta_Caves', 'MAHARASHTRA', 'AURANGABAD', '07/02/2026', 1983, 'AURANGABAD AIRPORT', 'https://www.aai.aero', 'JALGAON JUNCTION', 'https://indianrailways.gov.in', '9AM-5PM', 'VIVANTA, HOTEL AJANTA AMBASSADOR', 'https://www.tajhotels.com', 9000, 'Buddhist cave monuments dating from the 2nd century BCE to 480 CE.', 'Closed on Mondays, no flash photography.'],
-    19: ['THE GOLDEN TEMPLE', 'https://en.wikipedia.org/wiki/Golden_Temple', 'PUNJAB', 'AMRITSAR', '07/02/2026', 1577, 'AMRITSAR AIRPORT', 'https://www.aai.aero', 'AMRITSAR JUNCTION', 'https://indianrailways.gov.in', 'ALL-DAY', 'HYATT REGENCY, TAJ SWARNA', 'https://www.tajhotels.com', 7000, 'The preeminent spiritual site of Sikhism, also known as Sri Harmandir Sahib.', 'Cover your head, remove shoes, photography limited.'],
-    20: ['THE CHURCHES AND CONVENTS OF GOA', 'https://en.wikipedia.org/wiki/Churches_and_Convents_of_Goa', 'GOA', 'OLD GOA', '07/02/2026', 1986, 'GOA INTERNATIONAL', 'https://www.aai.aero', 'MADGAON JUNCTION', 'https://indianrailways.gov.in', '7:30AM-6:30PM', 'W GOA, TAJ EXOTICA', 'https://www.marriott.com', 13000, 'A set of religious monuments in Old Goa, the former capital of Portuguese India.', 'Dress modestly for active churches, parking can be far.']
+    1: ['THE-AGRA-FORT', 'https://en.wikipedia.org/wiki/Agra_Fort', 'UTTAR PRADESH', 'AGRA', '07/02/2026', 1573, 'AGRA AIRPORT', 'https://www.aai.aero/en/node/2901', 'AGRA FORT RAILWAY', 'https://indianrailways.gov.in', 'ALL-DAY', 'THE IMPERIAL, ITC MUGHAL, COURTYARD BY MARRIOTT', 'https://all.accor.com/hotel/C0W7/index.en.shtml', 10500, 'A 16th-century Mughal imperial fortress in Agra. It was the main residence of the emperors of the Mughal Dynasty until 1638.', 'Intense Crowds, Touts, Noise, Scams.'],
+    2: ['THE-TAJ-MAHAL', 'https://en.wikipedia.org/wiki/Taj_Mahal', 'UTTAR PRADESH', 'AGRA', '07/02/2026', 1632, 'AGRA AIRPORT', 'https://www.aai.aero', 'AGRA CANTT', 'https://indianrailways.gov.in', '6AM-7PM', 'THE OBEROI AMARVILAS, TAJ HOTEL', 'https://www.oberoihotels.com/hotels-in-agra-amarvilas-resort/', 15000, 'An ivory-white marble mausoleum on the right bank of the river Yamuna. Built by Shah Jahan for his wife Mumtaz Mahal.', 'Heavy security check, strictly no drones, crowds.'],
+    3: ['THE-LOTUS-TEMPLE', 'https://en.wikipedia.org/wiki/Lotus_Temple', 'DELHI', 'NEW DELHI', '07/02/2026', 1986, 'IGIA DELHI', 'https://www.newdelhiairport.in', 'KALKAJI MANDIR METRO', 'https://www.delhimetrorail.com', '9AM-5PM', 'EROS HOTEL, THE SURYAA', 'https://www.eroshotels.co.in/', 4500, 'A Bahai House of Worship notable for its flowerlike shape. It has become a prominent attraction in the city.', 'Silence must be maintained, no photography inside.'],
+    4: ['THE-WILD-ASS-SANCTUARY', 'https://en.wikipedia.org/wiki/Indian_Wild_Ass_Sanctuary', 'GUJARAT', 'LITTLE RANN OF KUTCH', '07/02/2026', 1972, 'AHMEDABAD AIRPORT', 'https://www.aai.aero', 'DHRANGADHRA RAILWAY', 'https://indianrailways.gov.in', '6AM-6PM', 'RANN RIDERS, DESERT COURTYARD', 'https://www.rannriders.com', 8500, 'The largest wildlife sanctuary in India, home to the endangered Indian Wild Ass.', 'Extreme heat in summer, carry plenty of water.'],
+    5: ['THE-MATTANCHERRY-PALACE', 'https://en.wikipedia.org/wiki/Mattancherry_Palace', 'KERALA', 'KOCHI', '07/02/2026', 1545, 'COCHIN INTERNATIONAL', 'https://cial.aero', 'ERNAKULAM JUNCTION', 'https://indianrailways.gov.in', '10AM-5PM','GRAND HYATT, TAJ MALABAR', 'https://www.hyatt.com/grand-hyatt/en-US/cokgh-grand-hyatt-kochi-bolgatty', 6000, 'A Portuguese palace popularly known as the Dutch Palace, featuring Kerala murals depicting Hindu temple art.', 'Closed on Fridays, no footwear inside galleries.'],
+    6: ['LE-CORBUSIER-ARCHITECTURAL-WORK', 'https://en.wikipedia.org/wiki/The_Architectural_Work_of_Le_Corbusier', 'CHANDIGARH', 'CHANDIGARH', '07/02/2026', 1950, 'CHANDIGARH AIRPORT', 'https://www.aai.aero', 'CHANDIGARH JUNCTION', 'https://indianrailways.gov.in', '9AM-5PM', 'JW MARRIOTT, TAJ CHANDIGARH', 'https://www.marriott.com', 9000, 'The Capitol Complex in Chandigarh is a UNESCO site representing the modern movement in architecture.', 'Prior permission needed for the Capitol Complex.'],
+    7: ['THE-GREAT-HIMALAYAN-NATIONAL-PARK', 'https://en.wikipedia.org/wiki/Great_Himalayan_National_Park', 'HIMACHAL PRADESH', 'KULLU', '07/02/2026', 1984, 'KULLU MANALI AIRPORT', 'https://www.aai.aero', 'JOGINDER NAGAR', 'https://indianrailways.gov.in', 'ALL-DAY', 'THE RAJU COTTAGE, FOREST GUEST HOUSE', 'https://www.itchotels.com/in/en/welcomhotelshimla-shimla', 12000, 'A high altitude park with diverse flora and fauna, including the elusive Snow Leopard.', 'Steep treks, unpredictable weather, permit required.'],
+    8: ['THE-WESTERN-GHATS', 'https://en.wikipedia.org/wiki/Western_Ghats', 'MAHARASHTRA/KARNATAKA/KERALA', 'MULTIPLE', '07/02/2026', 2012, 'MUMBAI/BANGALORE AIRPORT', 'https://www.aai.aero', 'MULTIPLE', 'https://indianrailways.gov.in', 'ALL-DAY', 'VIVANTA BY TAJ, STERLING RESORTS', 'https://www.sterlingholidays.com', 18000, 'One of the worlds ten hottest biodiversity hotspots, older than the Himalayas.', 'Leeches during monsoon, dense forests, stay on trails.'],
+    9: ['THE-RED-FORT', 'https://en.wikipedia.org/wiki/Red_Fort', 'DELHI', 'OLD DELHI', '07/02/2026', 1639, 'IGIA DELHI', 'https://www.newdelhiairport.in', 'OLD DELHI RAILWAY', 'https://indianrailways.gov.in', '9:30AM-4:30PM', 'THE MAIDENS HOTEL, ITC MAURYA', 'https://www.oberoihotels.com', 8000, 'A historic fort that served as the main residence of Mughal Emperors for nearly 200 years.', 'Closed on Mondays, extremely crowded, light show at night.'],
+    10: ['THE-ROCK-SHELTERS-OF-BHIMBETKA', 'https://en.wikipedia.org/wiki/Rock_Shelters_of_Bhimbetka', 'MADHYA PRADESH', 'RAISEN', '07/02/2026', 2003, 'BHOPAL AIRPORT', 'https://www.aai.aero', 'BHOPAL JUNCTION', 'https://indianrailways.gov.in', '7AM-6PM', 'JEHAN NUMA PALACE, COURTYARD BY MARRIOTT', 'https://www.marriott.com', 7500, 'Archaeological site exhibiting the earliest traces of human life on the Indian subcontinent.', 'Remote area, hire a guide for historical context.'],
+    11: ['THE-MOUNTAIN-RAILWAYS-OF-INDIA', 'https://en.wikipedia.org/wiki/Mountain_Railways_of_India', 'WB/TN/HP', 'MULTIPLE', '07/02/2026', 1999, 'BAGDOGRA/COIMBATORE', 'https://www.aai.aero', 'DARJEELING/OOTY/KALKA', 'https://indianrailways.gov.in', 'SCHEDULE-BASED', 'WINDAMERE HOTEL, SAVOY OOTY', 'https://www.tajhotels.com', 14000, 'Includes Darjeeling Himalayan Railway, Nilgiri Mountain Railway, and Kalka-Shimla Railway.', 'Book tickets months in advance, landslides in monsoon.'],
+    12: ['THE-QUTB-MINAR', 'https://en.wikipedia.org/wiki/Qutb_Minar', 'DELHI', 'MEHRAULI', '07/02/2026', 1192, 'IGIA DELHI', 'https://www.newdelhiairport.in', 'QUTUB MINAR METRO', 'https://www.delhimetrorail.com', '7AM-9PM', 'THE LODHI, HILTON GARDEN INN', 'https://www.hilton.com', 5000, 'A 73-metre tall tapering tower and a UNESCO World Heritage Site.', 'No climbing the tower, high summer heat.'],
+    13: ['THE-SUNDARBANS-NATIONAL-PARK', 'https://en.wikipedia.org/wiki/Sundarbans_National_Park', 'WEST BENGAL', '24 PARGANAS', '07/02/2026', 1987, 'KOLKATA AIRPORT', 'https://www.aai.aero', 'CANNING RAILWAY', 'https://indianrailways.gov.in', '8AM-6PM', 'SUNDARBAN TIGER CAMP', 'https://www.sundarbantigercamp.com', 16000, 'World largest mangrove forest and home to the Royal Bengal Tiger.', 'Boat travel only, watch out for crocodiles and tigers.'],
+    14: ['THE-HAMPI-MONUMENTS', 'https://en.wikipedia.org/wiki/Hampi', 'KARNATAKA', 'HAMPI', '07/02/2026', 1986, 'HUBLI AIRPORT', 'https://www.aai.aero', 'HOSAPETE JUNCTION', 'https://indianrailways.gov.in', '6AM-6PM', 'EVOLVE BACK, HYATT PLACE', 'https://www.evolveback.com', 11000, 'Ruins of the Vijayanagara Empire capital, featuring stunning Dravidian temples.', 'Vast area, hire a bicycle, dress conservatively.'],
+    15: ['THE-MAHABALIPURAM-MONUMENTS', 'https://en.wikipedia.org/wiki/Mahabalipuram', 'TAMIL NADU', 'CHENGALPATTU', '07/02/2026', 1984, 'CHENNAI INTERNATIONAL', 'https://www.aai.aero', 'CHENGALPATTU JUNCTION', 'https://indianrailways.gov.in', '6AM-6PM', 'RADISSON BLU RESORT, TAJ FISHERMANS COVE', 'https://www.tajhotels.com', 9500, 'A collection of 7th- and 8th-century religious monuments including the Shore Temple.', 'Humid coastal weather, local monkeys can be aggressive.'],
+    16: ['THE-SUN-TEMPLE-KONARK', 'https://en.wikipedia.org/wiki/Konark_Sun_Temple', 'ODISHA', 'PURI', '07/02/2026', 1984, 'BHUBANESWAR AIRPORT', 'https://www.aai.aero', 'PURI RAILWAY', 'https://indianrailways.gov.in', '6AM-8PM', 'MAYFAIR WAVES, THE CHARIOT', 'https://www.mayfairhotels.com', 8000, 'A 13th-century Sun Temple shaped like a giant chariot with carved stone wheels.', 'Intense sun, hire a government approved guide.'],
+    17: ['THE-ELLORA-CAVES', 'https://en.wikipedia.org/wiki/Ellora_Caves', 'MAHARASHTRA', 'AURANGABAD', '07/02/2026', 1983, 'AURANGABAD AIRPORT', 'https://www.aai.aero', 'AURANGABAD RAILWAY', 'https://indianrailways.gov.in', '6AM-6PM', 'VIVANTA, WELCOMHOTEL RAMA INTERNATIONAL', 'https://www.itchotels.com', 9000, 'One of the largest rock-cut monastery-temple cave complexes in the world.', 'Closed on Tuesdays, lots of walking and steps.'],
+    18: ['THE-AJANTA-CAVES', 'https://en.wikipedia.org/wiki/Ajanta_Caves', 'MAHARASHTRA', 'AURANGABAD', '07/02/2026', 1983, 'AURANGABAD AIRPORT', 'https://www.aai.aero', 'JALGAON JUNCTION', 'https://indianrailways.gov.in', '9AM-5PM', 'VIVANTA, HOTEL AJANTA AMBASSADOR', 'https://www.tajhotels.com', 9000, 'Buddhist cave monuments dating from the 2nd century BCE to 480 CE.', 'Closed on Mondays, no flash photography.'],
+    19: ['THE-GOLDEN-TEMPLE', 'https://en.wikipedia.org/wiki/Golden_Temple', 'PUNJAB', 'AMRITSAR', '07/02/2026', 1577, 'AMRITSAR AIRPORT', 'https://www.aai.aero', 'AMRITSAR JUNCTION', 'https://indianrailways.gov.in', 'ALL-DAY', 'HYATT REGENCY, TAJ SWARNA', 'https://www.tajhotels.com', 7000, 'The preeminent spiritual site of Sikhism, also known as Sri Harmandir Sahib.', 'Cover your head, remove shoes, photography limited.'],
+    20: ['THE-CHURCHES-AND-CONVENTS-OF-GOA', 'https://en.wikipedia.org/wiki/Churches_and_Convents_of_Goa', 'GOA', 'OLD GOA', '07/02/2026', 1986, 'GOA INTERNATIONAL', 'https://www.aai.aero', 'MADGAON JUNCTION', 'https://indianrailways.gov.in', '7:30AM-6:30PM', 'W GOA, TAJ EXOTICA', 'https://www.marriott.com', 13000, 'A set of religious monuments in Old Goa, the former capital of Portuguese India.', 'Dress modestly for active churches, parking can be far.']
 }
 def list():
-    print("\t\t HERITAGE SITE LIST", "\n \n The table lists Serial No, Name, State, City, Date Estabilished, Closest Airport, Closest Railway, Touring Times, Close hotels from IHG, Average tourism rates and a desc")
     for x in Data:
-        print('\n\n',x, '-\t', Data[x][0],',', Data[x][2], ',', Data[x][3], '-\n Since:', Data[x][5], '\n Closest Airport:', Data[x][6], '\n Closest Railway:', Data[x][8], '\n Touring Times:', Data[x][10], '\n Closest hotels:', Data[x][11], '\n Rates: ~', Data[x][13],'Rupees per person', '\n\n Decription:', Data[x][14], '\n\n\n')
-    print("Type list() to print the dictionary, search() to search the dictionary, delete() to delete an entry, and entry() to add a number of new entries.")
+        print(RED + '\n\n',x, Data[x][0],',', Data[x][2], ',', Data[x][3], YELLOW + '-\n     Since:', Data[x][5], '\n     Closest Airport:', Data[x][6], '\n     Closest Railway:', Data[x][8], '\n     Access:', Data[x][10], '\n     Closest hotels:', Data[x][11], '\n     Rates: ~', Data[x][13],'Rupees per person', '\n\n     Decription:', Data[x][14], '\n\n\n'+ END)
+    home()
 def search():
     trm = input("Search: ").lower()
     for x in Data:
         for y in Data[x]:
             if trm in str(y).lower():
-                print('\n\n',x, '-\t', Data[x][0],',', Data[x][2], ',', Data[x][3], '-\n Since:', Data[x][5], '\n Closest Airport:', Data[x][6], '\n Closest Railway:', Data[x][8], '\n Touring Times:', Data[x][10], '\n Closest hotels:', Data[x][11], '\n Rates: ~', Data[x][13],'Rupees per person', '\n\n Decription:', Data[x][14], '\n\n\n')
+                print(RED + '\n\n',x, Data[x][0],',', Data[x][2], ',', Data[x][3], YELLOW + '-\n     Since:', Data[x][5], '\n     Closest Airport:', Data[x][6], '\n     Closest Railway:', Data[x][8], '\n     Access:', Data[x][10], '\n     Closest hotels:', Data[x][11], '\n     Rates: ~', Data[x][13],'Rupees per person', '\n\n     Decription:', Data[x][14], '\n\n\n'+ END)
                 break
             else:
                 t=0
-    print("\nType list() to print the dictionary, search() to search the dictionary, delete() to delete an entry, and entry() to add a number of new entries.")
+    home()
 def entry():
     Index = len(Data)
-    nEntry = int(input("Input number of new Entries: "))
+    nEntry = int(input(GREEN + "Input number of new Entries: "))
     for x in range(nEntry):
         entry_id = Index + x + 1
         print(f"Entry {entry_id}")
@@ -60,7 +63,7 @@ def entry():
         HOTEL_INFO = input("Enter Hotel Info links: ").lower()
         FEES = input("Enter travelling fees: ")
         DESC = input("Write a description: ")
-        PREC = input("Label Precautions, and dangers: ")
+        PREC = input("Label Precautions, and dangers: " + END)
        
         conlist = [NAME, WIKI, STATE, LOCATION, YEARLSTED, SINCE, AIRPORT,
                    AIRPORT_INFO, RAILWAY, RAILWAY_INFO, VISITHRS, HOTEL, HOTEL_INFO,
@@ -68,9 +71,9 @@ def entry():
        
         Data[entry_id] = conlist
         print("\n\n")
-    print("Type list() to print the dictionary, search() to search the dictionary, delete() to delete an entry, and entry() to add a number of new entries.")
+    home()
 def delete():
-    trm = int(input("Enter the Serial No of the article you want to delete and it shall be removed: "))
+    trm = int(input(RED + "Enter the Serial No of the article you want to delete and it shall be removed: " + END))
     Data.pop(trm)
     DataTemp={}
     x = 1
@@ -81,5 +84,39 @@ def delete():
         DataTemp[x] = Data[x+1]
     for x in DataTemp:
         Data[x] = DataTemp[x]
-    print("Type list() to print the dictionary, search() to search the dictionary, delete() to delete an entry, and entry() to add a number of new entries.")
-list()
+    home()
+def site():
+    req2 = int(input("\nEnter Article Serial No. : "))
+    req1 = int(input(" 1. Wiki \n 2. Airport \n 3. Train \n 4. Nearest Hotel \n 5. Images \n 6. Open in Maps\n\n"))
+    if req1 == 1:
+        req3 = 1
+        link = Data[req2][req3]
+    if req1 == 2:
+        req3 = 7
+        link = Data[req2][req3]
+    if req1 == 3:
+        req3 = 9
+        link = Data[req2][req3]
+    if req1  == 4:
+        req3 = 12
+        link = Data[req2][req3]
+    if req1 == 5:
+        link = ('https://images.google.com/search?q='+Data[req2][0])
+    if req1 == 6:
+        link = ('https://www.google.com/maps/search/'+Data[req2][0])
+    webbrowser.open(link)
+    home()
+def home():
+    req = int(input("\n 1.List Sites \n 2.Search Dictionary \n 3.New Entry \n 4.Delete Entry \n 5.Support Links \n\n Option: "))
+    if req == 1:
+        list()
+    if req == 2:
+        search()
+    if req == 3:
+        entry()
+    if req  == 4:
+        delete()
+    if req == 5:
+        site()
+print("\t\t HERITAGE SITE LIST")
+home()
