@@ -1,5 +1,5 @@
 #API1 = "99ae80812dcd62ae39deb0967afcd554"
-#root1:main tkinter thingy, thing1: frame inside tkinter window, API login for TMDB not OMDB, for login the text is black, and field is yellow, and for passwords the opposite. pack screen3.
+#root1:main tkinter, thing1: frame inside tkinter window, API login for TMDB not OMDB, for login the text is black, and field is yellow, and for passwords the opposite. pack screen3.
 
 
 import tkinter as tk
