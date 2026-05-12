@@ -18,7 +18,7 @@ x = 0
 y = 0
 i = 0
 l = []
-iflog = None
+iflog = 44331
 API1 = "99ae80812dcd62ae39deb0967afcd554"
 Red1 = '#470B0B'
 Red2 = '#6F1111'
@@ -234,18 +234,22 @@ def home():
 
     def loginf():
         global iflog
-        id2 = usergetter.get()
-        password = passwordgetter.get()
-        for uid, data in loginsdict.items():
-            if data[0] == id2 and data[1] == password:
-                iflog = uid
-                loginframe.destroy()
-                home1()
-                Movies1()
-                TV1()
-                events1()
-                greet = tk.Label(root1.thing1, text=(data[0]), fg="yellow", bg = Red2, font=("Menlo", 16))
-                greet.place(x=1275, y=43, width=100, height=34)
+        if iflog:
+            id2 = usergetter.get()
+            password = passwordgetter.get()
+            for uid, data in loginsdict.items():
+                if data[0] == id2 and data[1] == password:
+                    iflog = uid
+                    loginframe.destroy()
+                    home1()
+                    Movies1()
+                    TV1()
+                    events1()
+                    greet = tk.Label(root1.thing1, text=(data[0]), fg="yellow", bg = Red2, font=("Menlo", 16))
+                    greet.place(x=1275, y=43, width=100, height=34)
+        else:
+            greet = tk.Label(root1.thing1, text=(data[0]), fg="yellow", bg = Red2, font=("Menlo", 16))
+            greet.place(x=1275, y=43, width=100, height=34)
 
     loginframe = tk.Frame(root1.thing1, bg=Red2, width=500, height=100)
     loginframe.place(relx=0.7, y=10)
@@ -255,15 +259,17 @@ def home():
     passwordgetter.place(x=125, y = 33, width = 100, height = 34)
     loginrgskj = tk.Button(loginframe, font=("Menlo"), text="LOGIN", command=loginf)
     loginrgskj.place(x=250, y = 33, width = 100, height = 34)
-    
-    tabs1 = ttk.Notebook(root1.thing1)
+    style = ttk.Style()
+    style.theme_use('clam')
+    style.configure("Black.TNotebook", background="black", borderwidth=0)
+    tabs1 = ttk.Notebook(root1.thing1, style = 'Black.TNotebook')
     tabs1.place(x = 0, y = 120, relwidth = 1, relheight = 0.85)
     
-    hometab = tk.Frame(tabs1)
-    moviestab = tk.Frame(tabs1)
-    tvtab = tk.Frame(tabs1)
-    eventstab = tk.Frame(tabs1)
-    Abouttab = tk.Frame(tabs1)
+    hometab = tk.Frame(tabs1, bg="black")
+    moviestab = tk.Frame(tabs1, bg="black")
+    tvtab = tk.Frame(tabs1, bg="black")
+    eventstab = tk.Frame(tabs1, bg="black")
+    Abouttab = tk.Frame(tabs1, bg="black")
     
     tabs1.add(hometab, text = "Home")
     tabs1.add(moviestab, text = "Movies")
@@ -279,36 +285,36 @@ def home():
     logotop2.place(x = 30, y = 10)
 
     def home1():
-        newshome = tk.LabelFrame(hometab, text = "News", fg = "white", font = ("Menlo", 32))
+        newshome = tk.LabelFrame(hometab, text = "News", fg = "white", font = ("Menlo", 32), bg='#241415')
         newshome.place(relx = 0.05, rely = 0.05, relwidth = 0.4, relheight = 0.2)
         for newstext in news:
             tk.Label(newshome, text = newstext, fg = "yellow", font = ("Menlo", 18)).pack(pady = 0.1)
 
-        promohome = tk.LabelFrame(hometab, text = "Offers", fg = "white", font = ("Menlo", 32))
+        promohome = tk.LabelFrame(hometab, text = "Offers", fg = "white", font = ("Menlo", 32), bg='#241415')
         promohome.place(relx = 0.55, rely = 0.01, relwidth = 0.4, relheight = 0.24)
         tk.Label(promohome, text = "1. Celebrating Women: Tickets 40% off on Women's Day \n 2. 10% discount on tickets with code MAR08", 
-                fg = "yellow", font = ("Menlo", 18)).pack(pady = 2)
+                fg = "yellow", font = ("Menlo", 18), bg='#241415').pack(pady = 2)
         if iflog:
             pointstext = ("You have "+ str(loginsdict[iflog][4]) + " reward points")
-            tk.Label(promohome, text = pointstext, fg = "yellow", font = ("Menlo", 18)).pack(pady = 2)
+            tk.Label(promohome, text = pointstext, fg = "yellow", font = ("Menlo", 18), bg='#241415').pack(pady = 2)
 
-        watchlisthome = tk.LabelFrame(hometab, text = "Watchlist", fg = "white", font = ("Menlo", 32))
+        watchlisthome = tk.LabelFrame(hometab, text = "Watchlist", fg = "white", font = ("Menlo", 32), bg='#241415')
         watchlisthome.place(relx = 0.05, rely = 0.3, relwidth = 0.9, relheight = 0.6)
         if iflog:
             for movies2 in loginsdict[iflog][3]:
-                tk.Label(watchlisthome, text = movies2, fg = "yellow", font = ("Menlo", 32)).pack(pady = 1)
+                tk.Label(watchlisthome, text = movies2, fg = "yellow", font = ("Menlo", 32), bg='#241415').pack(pady = 1)
         else:
-            tk.Label(watchlisthome, text = "LOGIN for Watchlist", fg = "yellow", font = ("Menlo", 32)).pack(pady = 1)
+            tk.Label(watchlisthome, text = "LOGIN for Watchlist", fg = "yellow", font = ("Menlo", 32), bg='#241415').pack(pady = 1)
     home1()
 
     def Movies1():        
-        top10 = tk.LabelFrame(moviestab, text = "TOP 10", fg = "white", font = ("Menlo", 32))
+        top10 = tk.LabelFrame(moviestab, text = "TOP 10", fg = "white", font = ("Menlo", 32), bg='#241415')
         top10.place(relx = 0.05, rely = 0.05, relwidth = 0.9, relheight = 0.3)
 
-        watchlistmovies = tk.LabelFrame(moviestab, text = "Watchlist", fg = "white", font = ("Menlo", 32))
+        watchlistmovies = tk.LabelFrame(moviestab, text = "Watchlist", fg = "white", font = ("Menlo", 32), bg='#241415')
         watchlistmovies.place(relx = 0.05, rely = 0.4, relwidth = 0.9, relheight = 0.3)
 
-        mustwatches = tk.LabelFrame(moviestab, text = "Must Watch", fg = "white", font = ("Menlo", 32))
+        mustwatches = tk.LabelFrame(moviestab, text = "Must Watch", fg = "white", font = ("Menlo", 32), bg='#241415')
         mustwatches.place(relx = 0.05, rely = 0.75, relwidth = 0.9, relheight = 0.3)
         def fetcher1(endpoint, frame):
             link3 = f"https://api.themoviedb.org/3/{endpoint}?api_key={API1}&language=en-US&page=1"
@@ -329,13 +335,13 @@ def home():
     Movies1()
     
     def TV1():        
-        top10 = tk.LabelFrame(tvtab, text = "TOP 10", fg = "white", font = ("Menlo", 32))
+        top10 = tk.LabelFrame(tvtab, text = "TOP 10", fg = "white", font = ("Menlo", 32), bg='#241415')
         top10.place(relx = 0.05, rely = 0.05, relwidth = 0.9, relheight = 0.3)
 
-        watchlistmovies = tk.LabelFrame(tvtab, text = "Watchlist", fg = "white", font = ("Menlo", 32))
+        watchlistmovies = tk.LabelFrame(tvtab, text = "Watchlist", fg = "white", font = ("Menlo", 32), bg='#241415')
         watchlistmovies.place(relx = 0.05, rely = 0.4, relwidth = 0.9, relheight = 0.3)
 
-        mustwatches = tk.LabelFrame(tvtab, text = "Must Watch", fg = "white", font = ("Menlo", 32))
+        mustwatches = tk.LabelFrame(tvtab, text = "Must Watch", fg = "white", font = ("Menlo", 32), bg='#241415')
         mustwatches.place(relx = 0.05, rely = 0.75, relwidth = 0.9, relheight = 0.3)
         def fetcher2(endpoint, frame):
             link3 = f"https://api.themoviedb.org/3/{endpoint}?api_key={API1}&language=en-US&page=1"
@@ -355,18 +361,18 @@ def home():
     TV1()
 
     def events1():        
-        WorldCupFIFA = tk.LabelFrame(eventstab, text = "World Cup FIFA", fg = "white", font = ("Menlo", 32))
+        WorldCupFIFA = tk.LabelFrame(eventstab, text = "World Cup FIFA", fg = "white", font = ("Menlo", 32), bg='#241415')
         WorldCupFIFA.place(relx = 0.05, rely = 0.05, relwidth = 0.9, relheight = 0.3)
 
-        Formula1 = tk.LabelFrame(eventstab, text = "FORMULA 1", fg = "white", font = ("Menlo", 32))
+        Formula1 = tk.LabelFrame(eventstab, text = "FORMULA 1", fg = "white", font = ("Menlo", 32), bg='#241415')
         Formula1.place(relx = 0.05, rely = 0.4, relwidth = 0.9, relheight = 0.3)
 
-        Politics = tk.LabelFrame(eventstab, text = "Live World News and Politics", fg = "white", font = ("Menlo", 32))
+        Politics = tk.LabelFrame(eventstab, text = "Live World News and Politics", fg = "white", font = ("Menlo", 32), bg='#241415')
         Politics.place(relx = 0.05, rely = 0.75, relwidth = 0.9, relheight = 0.3)
     events1()
 
     def Aboutpage():
-        desc2 = tk.Label(Abouttab, text = "\n\n Mock Movie Database/Theater booking software based off of 'Rotten Tomatoes' written in Python\n with the help of TMDB which is where all movie info and posters are from.\n Minimal assistance from Google getting the gears turning but otherwise, it's not vibecoded.\n Done as hobby project by Darsh R.", fg = "white", font = ("Menlo", 28)).pack(pady = 10)
+        desc2 = tk.Label(Abouttab, text = "\n\n Mock Movie Database/Theater booking software based off of 'Rotten Tomatoes' written in Python\n with the help of TMDB which is where all movie info and posters are from.\n Minimal assistance from Google getting the gears turning but otherwise, it's not vibecoded.\n Done as hobby project by Darsh R.", fg = "white", font = ("Menlo", 28), bg='#241415').pack(pady = 10)
     Aboutpage()
 
 #loading()
