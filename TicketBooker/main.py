@@ -18,7 +18,7 @@ x = 0
 y = 0
 i = 0
 l = []
-iflog = 44331
+iflog = None
 API1 = "99ae80812dcd62ae39deb0967afcd554"
 Red1 = '#470B0B'
 Red2 = '#6F1111'
@@ -288,7 +288,7 @@ def home():
         newshome = tk.LabelFrame(hometab, text = "News", fg = "white", font = ("Menlo", 32), bg='#241415')
         newshome.place(relx = 0.05, rely = 0.05, relwidth = 0.4, relheight = 0.2)
         for newstext in news:
-            tk.Label(newshome, text = newstext, fg = "yellow", font = ("Menlo", 18)).pack(pady = 0.1)
+            tk.Label(newshome, text = newstext, fg = "black", font = ("Menlo", 18)).pack(pady = 0.1)
 
         promohome = tk.LabelFrame(hometab, text = "Offers", fg = "white", font = ("Menlo", 32), bg='#241415')
         promohome.place(relx = 0.55, rely = 0.01, relwidth = 0.4, relheight = 0.24)
